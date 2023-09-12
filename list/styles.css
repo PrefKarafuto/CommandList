@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#result p {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+}
+
+.setting-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.setting-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.setting-description, .setting-location, .setting-timing, .setting-example, .setting-status {
+    margin: 5px 0;
+}
+
+.setting-status span {
+    font-weight: bold;
+    color: #0055ff;
+}
+
+.setting-item-off {
+    opacity: 0.5;
+}
+
+.setting-status-off span {
+    color: red;
+}
+#title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+}
