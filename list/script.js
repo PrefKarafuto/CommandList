@@ -74,12 +74,14 @@ const bitDescriptions = {
 function displayBitmask(value) {
     let resultText = 'コマンド一覧<br>';
     const bitKeys = Object.keys(bitDescriptions);
+    const isPassSet = (value & 1) !== 0; //passが設定可能か
     for (let i of bitKeys) {
         const mask = 1 << parseInt(i, 10);  // キーを明示的に数値に変換
         const isOn = (value & mask) !== 0;
         const bitInfo = bitDescriptions[i];
         const itemClass = isOn ? 'setting-item' : 'setting-item setting-item-off';
         const statusClass = isOn ? '' : 'setting-status-off';
+        const needPassSet = isOn ? ((!isPassSet && i>=7 && i<=9) ? 'スレッドパスワード無効のため使用不可':'使用可') : '使用不可';
         resultText += `
             <div class="${itemClass}">
                 <div class="setting-name">${bitInfo.name}</div>
@@ -88,7 +90,7 @@ function displayBitmask(value) {
                 <hr>
                 <div class="setting-description">説明: ${bitInfo.description}</div>
                 <div class="setting-example">例: ${bitInfo.example}</div>
-                <div class="setting-status ${statusClass}">状態: <span>${isOn ? '有効' : '無効'}</span></div>
+                <div class="setting-status ${statusClass}">状態: <span>${needPassSet}</span></div>
             </div>`;
     }
     document.getElementById('result').innerHTML = resultText;
