@@ -68,6 +68,8 @@ const bitDescriptions = {
     description: "スレッドを過去ログに送ります",example: "!pool" },
     10: { name: "実況モード(!live)",location: "本文", timing: "スレ立て時・スレッドpass設定時",
     description: "一時間以上書き込みがないと、スレッドが過去ログに送られるようにします",example: "!live" },
+    11: { name: "BBS_SLIP(!slip)",location: "本文", timing: "スレ立て時・スレッドpass設定時",
+    description: "ワッチョイやKOROKOROを表示させます<br>vvv:ワッチョイ<br>vvvv:ワッチョイ+IP<br>vvvvv:ワッチョイ+KOROKORO<br>vvvvvv:ワッチョイ+KOROKORO+IP",example: "!slip:vvvvv" },
     // 他のビットについてもここに追加
 };
 
@@ -85,12 +87,12 @@ function displayBitmask(value) {
         resultText += `
             <div class="${itemClass}">
                 <div class="setting-name">${bitInfo.name}</div>
+                <div class="setting-status ${statusClass}"><span>${needPassSet}</span></div>
                 <div class="setting-location">記述場所: ${bitInfo.location}</div>
                 <div class="setting-timing">記述タイミング: ${bitInfo.timing}</div>
                 <hr>
                 <div class="setting-description">説明: ${bitInfo.description}</div>
                 <div class="setting-example">例: ${bitInfo.example}</div>
-                <div class="setting-status ${statusClass}">状態: <span>${needPassSet}</span></div>
             </div>`;
     }
     document.getElementById('result').innerHTML = resultText;
