@@ -1,50 +1,18 @@
-async function readFile() {
+async function getParam(){
     const urlParams = new URLSearchParams(window.location.search);
-    const bbsname = urlParams.get('bbs');
+    const commandValue = urlParams.get('command');
+    const isNinja = urlParams.get('is_ninja');
+    const bbsTitle = urlParams.get('title');
 
-    if (!bbsname) {
-        console.error('掲示板がURLパラメータで指定されていません');
+    if (!commandValue) {
+        console.error('URLパラメータが不足しています');
         return;
+    }else{
+        displayBitmask(commandValue,isNinja);
     }
 
-    const filePath = `../${bbsname}/SETTING.TXT`;
-
-    try {
-        const response = await fetch(filePath,{cache: "no-store"});
-        if (response.ok) {
-            const arrayBuffer = await response.arrayBuffer();
-            const text = new TextDecoder('shift_jis').decode(new Uint8Array(arrayBuffer));
-            const lines = text.split('\n');
-            let bbsCommandValue = null;
-            let bbsTitle = null;
-            let bbsNinja = null;
-
-            for (let line of lines) {
-                if (line.startsWith('BBS_COMMAND=')) {
-                    bbsCommandValue = line.split('=')[1];
-                } else if (line.startsWith('BBS_TITLE=')) {
-                    bbsTitle = line.split('=')[1];
-                } else if (line.startsWith('BBS_NINJA=checked')) {
-                    bbsNinja = 1;
-                }
-
-                if (bbsCommandValue !== null && bbsTitle !== null) {
-                    break;
-                }
-            }
-
-            if (bbsCommandValue !== null) {
-                displayBitmask(bbsCommandValue,bbsNinja);
-            }
-
-            if (bbsTitle !== null) {
-                document.getElementById('title').innerText = `${bbsTitle}`;
-            }
-        } else {
-            console.error('ファイルの読み込みに失敗しました');
-        }
-    } catch (error) {
-        console.error('エラー:', error);
+    if (bbsTitle !== null) {
+        document.getElementById('title').innerText = `${bbsTitle}`;
     }
 }
 
@@ -81,7 +49,7 @@ const bitDescriptions = {
     description: "スレタイを変更します",example: "!changetitle:今日の晩飯が茗荷二個なんだが" },
     15: { name: "スレ主表示なし(!hidenusi)",location: "本文", timing: "いつでも",
     description: "スレ主のIDの末尾に表示される(主)表記を消します",example: "!hidenusi" },
-    16: { name: "追記(!add)",location: "本文", timing: "スレ立て時・スレッドpass設定時",
+    16: { name: "追記(!add)",location: "本文", timing: "スレ立て時",
     description: "自分のレスに追記できます",example: "!add:>>407:これリンク切れ" },
     17: { name: "強制age(!float)",location: "本文", timing: "いつでも",
     description: "スレッドが下がらなくなります",example: "!float" },
@@ -89,9 +57,17 @@ const bitDescriptions = {
     description: "スレがDat落ちしにくくなります",example: "!nopool" },
     19: { name: "レス削除(!delete)",location: "本文", timing: "書き込み時",
     description: "指定したレスを削除できます",example: "!delete:>>98" },
+    20: { name: "extend(!extend)",location: "本文一行目", timing: "スレ立て時",
+    description: "5ch互換用のコマンドです",example: "!extend:on:vvvvvv:1000:512" },
+    21: { name: "副主(!sub)",location: "本文", timing: "書き込み時",
+    description: "スレッドに副主を設定します",example: "!sub:>>5" },
+    22: { name: "BAN投票(!vote)",location: "本文", timing: "書き込み時",
+    description: "対象となるユーザにBAN投票します<br>スレ主・副主以外も使用可能 (レベル制限がかかっている場合、その影響を受ける)",example: "!vote:>>512" },
+    23: { name: "スレッド属性引き継ぎ(!loadattr)",location: "本文一行目", timing: "スレ立て時",
+    description: "対象のスレッドの属性を引き継いでスレ立てをします<br>スレッドIDで引き継ぎ元を指定してください",example: "!loadattr:1697985000" },
     // 他の項目についてもここに追加
     //template
-    //1: { name: "(!)",location: "本文", timing: "スレ立て時・スレッドpass設定時",
+    //1: { name: "(!)",location: "本文", timing: "スレ立て時",
     //description: "",example: "!" },
 };
 
@@ -125,5 +101,5 @@ function displayBitmask(value,ninja) {
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    readFile();
+    getParam();
 });
