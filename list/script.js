@@ -16,7 +16,7 @@ async function get_param() {
     }
 }
 
-const bitDescriptions = {
+const bit_descriptions = {
     0: { name: "スレッドパスワード(!pass)",location: "メール欄", timing: "スレ立て時・スレ中コマンド使用時",
     description: "スレ立て時にスレッドにパスワードを設定することで、スレッド中でもコマンドを使えるようにします",example: "!pass:g56e*eASqr" },
     1: { name: "最大レス数(!maxres)",location: "本文", timing: "スレ立て時",
