@@ -1,18 +1,18 @@
-async function getParam(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const commandValue = urlParams.get('command');
-    const isNinja = urlParams.get('is_ninja');
-    const bbsTitle = urlParams.get('title');
+async function get_param() {
+    const url_params = new URLSearchParams(window.location.search);
+    const command_value = url_params.get('command');
+    const is_ninja = url_params.get('is_ninja');
+    const bbs_title = url_params.get('title');
 
-    if (!commandValue) {
+    if (!command_value) {
         console.error('URLパラメータが不足しています');
         return;
-    }else{
-        displayBitmask(commandValue,isNinja);
+    } else {
+        display_bitmask(command_value, is_ninja);
     }
 
-    if (bbsTitle !== null) {
-        document.getElementById('title').innerText = `${bbsTitle}`;
+    if (bbs_title !== null) {
+        document.getElementById('title').textContent = `${bbs_title}`;  // 安全に処理
     }
 }
 
@@ -71,35 +71,37 @@ const bitDescriptions = {
     //description: "",example: "!" },
 };
 
-function displayBitmask(value,ninja) {
-    let resultText = '<h3>コマンド一覧</h3><br>';
-    const bitKeys = Object.keys(bitDescriptions);
-    for (let i of bitKeys) {
-        const mask = 1 << i;
-        const isOn = (value & mask) !== 0;
-        const bitInfo = bitDescriptions[i];
-        let itemClass = isOn ? 'setting-item' : 'setting-item setting-item-off';
-        let statusClass = isOn ? '' : 'setting-status-off';
-        let needPassSet = isOn ? '使用可' : '使用不可';
-        if (i == 13 && !ninja){
-            itemClass = 'setting-item setting-item-off';
-            statusClass = 'setting-status-off';
-            needPassSet = '忍法帖無効のため使用不可';
+function display_bitmask(value, ninja) {
+    let result_text = '<h3>コマンド一覧</h3><br>';
+    const bit_keys = Object.keys(bit_descriptions);
+    for (let i of bit_keys) {
+        const mask = 1 << parseInt(i, 10);  // 確実に整数に変換
+        const is_on = (value & mask) !== 0;
+        const bit_info = bit_descriptions[i];
+        let item_class = is_on ? 'setting-item' : 'setting-item setting-item-off';
+        let status_class = is_on ? '' : 'setting-status-off';
+        let need_pass_set = is_on ? '使用可' : '使用不可';
+
+        if (i == 13 && !ninja) {
+            item_class = 'setting-item setting-item-off';
+            status_class = 'setting-status-off';
+            need_pass_set = '忍法帖無効のため使用不可';
         }
-        resultText += `
-            <div class="${itemClass}">
-                <div class="setting-name">${bitInfo.name}</div>
-                <div class="setting-status ${statusClass}"><span>${needPassSet}</span></div>
-                <div class="setting-location">記述場所: ${bitInfo.location}</div>
-                <div class="setting-timing">記述タイミング: ${bitInfo.timing}</div>
+
+        result_text += `
+            <div class="${item_class}">
+                <div class="setting-name">${bit_info.name}</div>
+                <div class="setting-status ${status_class}"><span>${need_pass_set}</span></div>
+                <div class="setting-location">記述場所: ${bit_info.location}</div>
+                <div class="setting-timing">記述タイミング: ${bit_info.timing}</div>
                 <hr>
-                <div class="setting-description">説明: ${bitInfo.description}</div>
-                <div class="setting-example">例: ${bitInfo.example}</div>
+                <div class="setting-description">説明: ${bit_info.description}</div>
+                <div class="setting-example">例: ${bit_info.example}</div>
             </div>`;
     }
-    document.getElementById('result').innerHTML = resultText;
+    document.getElementById('result').innerHTML = result_text;
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    getParam();
+    get_param();
 });
